@@ -183,7 +183,7 @@ background-position: 100% 0%
 
 --
 
-.h2[Veamos un ejemplo en **Word**]
+.h2[Veamos un ejemplo en **Word**] 
 
 ---
 
@@ -412,7 +412,7 @@ background-position: 100% 0%
 1. generemos una función que cree las variables de interés:
 
 - Población en edad de trabaja **-&gt;** pet = edad &gt;= 15
-- Fuerza de trabajo = fdt **-&gt;** edad &gt;= 15
+- Fuerza de trabajo = fdt **-&gt;** cae_especifico &gt;= 1 &amp; cae_especifico &lt;= 9
 - Ocupados **-&gt;** cae_especifico &gt;= 1 &amp; cae_especifico &lt;= 7
 - Desocupados **-&gt;** cae_especifico &gt;= 8 &amp; cae_especifico &lt;= 9
 
@@ -440,7 +440,7 @@ background-position: 100% 0%
 1. generemos una función que cree las variables de interés:
 
 - Población en edad de trabaja **-&gt;** pet = edad &gt;= 15
-- Fuerza de trabajo = fdt **-&gt;** edad &gt;= 15
+- Fuerza de trabajo = fdt **-&gt;** cae_especifico &gt;= 1 &amp; cae_especifico &lt;= 9
 - Ocupados **-&gt;** cae_especifico &gt;= 1 &amp; cae_especifico &lt;= 7
 - Desocupados **-&gt;** ae_especifico &gt;= 8 &amp; cae_especifico &lt;= 9
 
@@ -491,7 +491,7 @@ seleccionamos solamente variables de interés
 variables = c("sexo","hogar","region","provincia","sector","fact_cal","agno","trimestre","fdt","ocupados","desocupados","pet","ocupados_exp","desocupados_exp",
   "pet_exp","fdt_exp","agno","trimestre")         
 
-ene &lt;- map_df(ene,~mutate(.x,across(c(ocupados,desocupados,pet,fdt), list(exp = ~ ponderar(.,fact_cal)))) %&gt;% 
+ene &lt;- map(ene,~mutate(.x,across(c(ocupados,desocupados,pet,fdt), list(exp = ~ ponderar(.,fact_cal)))) %&gt;% 
                 select(all_of(variables)))
 ```
 
@@ -549,7 +549,7 @@ background-position: 100% 0%
 
 - Calcule la misma tabla con **data.table** y compare resultados con alguno de los siguientes paquetes [aquí](https://www.jumpingrivers.com/blog/timing-in-r/)
 
-* sería buena idea aplicar las tablas de la lista con 
+* sería buena idea apilar las tablas de la lista con **dplyr::bind_rows()**
 
 **Tenemos 25 minutos!!!**
 
