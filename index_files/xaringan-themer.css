@@ -22,6 +22,7 @@
 @import url(https://fonts.googleapis.com/css?family=Cabin:600,600i&display=swap);
 @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700&display=swap);
 
+
 :root {
   /* Fonts */
   --text-font-family: 'Noto Sans';
@@ -39,6 +40,7 @@
   --header-h1-font-size: 2.25rem;
   --header-h2-font-size: 1.4rem;
   --header-h3-font-size: 1.2rem;
+  --header-big-font-size: 3rem;
 
   /* Colors */
   --text-color: black;
@@ -48,9 +50,9 @@
   --background-color: white;
   --link-color: #1381B0;
   --text-bold-color: black;
-  --code-highlight-color: rgba(255,255,0,0.5); 
+  --code-highlight-color: rgba(255,255,0,0.5);
   --inverse-text-color: #000000;
-  --inverse-background-color: blue;
+  --inverse-background-color: rgb(19, 55, 124);
   --inverse-header-color: #FFFFFF;
   --title-slide-background-color: #1381B0;
   --title-slide-text-color: #000000;
@@ -86,13 +88,22 @@ h2, h3 {
 }
 
 
+
+
+
 .remark-slide-content {
   background-color: var(--background-color);
   font-size: 1rem;
-  padding: 16px 64px 16px 64px;
+  padding: 16px 20px 16px 20px; /* 16px 64px 16px 64px */
   width: 100%;
   height: 100%;
 }
+
+
+
+
+
+
 .remark-slide-content h1 {
   font-size: var(--header-h1-font-size);
 }
@@ -110,10 +121,9 @@ h2, h3 {
 }
 .remark-inline-code {
   font-size: var(--code-inline-font-size);
-  color: #1381B0; 
+  color: #1381B0;
   /*color: red;*/
 }
-
 .remark-slide-number {
   color: black;
   /*opacity: 1;*/
@@ -136,7 +146,7 @@ a, a > code {
 .inverse {
   background-color: var(--inverse-background-color);
   color: var(--inverse-text-color);
-  
+
 }
 .inverse h1, .inverse h2, .inverse h3 {
   color: var(--inverse-header-color);
@@ -175,6 +185,7 @@ a, a > code {
   float: right;
   width: 47%;
 }
+
 .pull-right ~ * {
   clear: both;
 }
@@ -219,6 +230,22 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
   color: var(--text-color) !important;
 }
 
+
+.Large, .Large .remark-code, .Large .remark-inline-code {
+    font-size: 200%;
+}
+
+.font160, .code160 .remark-code, .code160 .remark-inline-code {
+    font-size: 160%;
+}
+
+.font130, .code130 .remark-code, .code130 .remark-inline-code {
+    font-size: 130%;
+}
+
+
+
+
 /* Slide Header Background for h1 elements */
 .remark-slide-content.header_background > h1 {
   display: block;
@@ -234,6 +261,40 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
 }
 .remark-slide-content.header_background {
   padding-top: 7rem;
+}
+
+/* Scroller para lámina */
+
+.remark-slide-scaler {
+    overflow-y: auto;
+}
+
+
+.size_style {
+  font-weight: bold;
+  font-style: italic;
+  margin-left: 30%;
+  font-size: 2em;
+  color: black;
+}
+
+.color_style_burdeo {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 2em;
+  color: #8B0000;
+}
+
+.color_style_black {
+  font-weight: bold;
+  font-style: italic;
+  font-size: 2em;
+  color: black;
+}
+
+
+.black_background{
+  background-color: black;
 }
 
 @page { margin: 0; }
@@ -287,7 +348,7 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
   background-size: contain;
   position: absolute;
   bottom: 0em;
-  
+
   left: 0em;
   width: 1000px;
   height: 10px;
@@ -299,6 +360,11 @@ table.dataTable.hover tbody tr:hover, table.dataTable.display tbody tr:hover {
 .red{
   color: red;
 }
+
+.big{
+  font-size: var(--header-big-font-size);
+}
+
 
 
 .caja {
@@ -314,36 +380,6 @@ table,  td {
   border: 1px solid black;
   background-color: white;
   padding: 1px;
-}
-
-
-/* Text format (agregadas) */
-
-.big-par { /*párrafo grande */
-  font-size: 55px;
-}
-
-.big-par-red { /*párrafo grande y rojo */
-  font-size: 55px;
-  color: #4a25db;
-}
-
-.biggest{ /*párrafo más grande */
-  font-size: 100px;
-  font-weight: bold;
-}
-
-.medium-par { /* párrafo mediano*/
-font-size: 30px;
-}
-
-.medium-par-red { /* párrafo mediano*/
-font-size: 30px;
-color: #4a25db;
-}
-
-.pur { /* normal purpura*/
-color: #4a25db;
 }
 
 

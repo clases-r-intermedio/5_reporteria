@@ -62,7 +62,7 @@ sum(ene$a2023_05_amj$fdt*ene$a2023_05_amj$fact_cal)
 # por el factor de expansión para obtener los datos a nivel poblacionales,
 # Si se comparan con los valores publicados los valores son similares?
 
-## Para lograr lo anterior es necesara una función que multiplique cualquier variable por el factor de expansión, utilizando lazy_eval
+## Para lograr lo anterior es necesaria una función que multiplique cualquier variable por el factor de expansión, utilizando lazy_eval
 
 ponderar = function(var,fact){
   
@@ -77,7 +77,8 @@ ponderar = function(var,fact){
 variables = c("sexo","hogar","region","provincia","sector","fact_cal","agno","trimestre","fdt","ocupados","desocupados","pet","ocupados_exp","desocupados_exp",
   "pet_exp","fdt_exp","agno","trimestre")         
 
-ene <- map_df(ene,~mutate(.x,across(c(ocupados,desocupados,pet,fdt), list(exp = ~ ponderar(.,fact_cal)))) %>% select(all_of(variables)))
+ene <- map(ene,~mutate(.x,across(c(ocupados,desocupados,pet,fdt), list(exp = ~ ponderar(.,fact_cal)))) %>% select(all_of(variables)))
+
 
 # Paso 3 calculamos 3 tasas principales
 # ahora calcularemos las principales tasas publicadas
@@ -124,61 +125,86 @@ ene <- map_df(ene,~mutate(.x,across(c(ocupados,desocupados,pet,fdt), list(exp = 
   
 ene_df = ene %>% bind_rows()
 
+# Calcule una tabla con las 3 tasas para todos los trimestres
+
+ene_df %>% 
+  group_by(agno, trimestre) %>% 
+  summarise(tasa_desocupacion = sum(desocupados_exp)/sum(pet_exp)*100,
+            tasa_ocupacion = sum(ocupados_exp)/sum(pet_exp)*100,
+            tasa_participacion = sum(fdt)/sum(pet_exp)*100) 
+
+
+# Calcule una tabla donde podamos ver las regiones con mayor tasa de desempleo por trimestre con **purrr**
+  
+
 tictoc::tic()
 
 ene_df %>% 
-  group_by(agno, trimestre, region, provincia) %>% 
+  group_by(agno, trimestre, region) %>% 
   summarise(tasa_desocupacion = sum(desocupados_exp)/sum(pet_exp)*100) %>% 
-  group_by(region) %>% 
+  group_by(trimestre) %>% 
   arrange(-tasa_desocupacion) %>% 
   slice(1)
   
-
-ene_df %>% 
-  group_by(agno, trimestre, region, provincia) %>% 
-  summarise(tasa_desocupacion = sum(desocupados_exp)/sum(pet_exp)*100) %>% 
-  group_by(region) %>% 
-  arrange(-tasa_desocupacion) %>% 
-  slice(1)
-  
-
 tictoc::toc()
     
+
+# - Calcule la misma tabla con **data.table** y compare resultados
+
 library(data.table)
 
 ene_dt <- as.data.table(ene_df)
 
 tictoc::tic()
 
-ene_dt[,tasa_desocupacion := sum(desocupados_exp)/sum(pet_exp)*100,by=.(agno, trimestre, region, provincia)][
-  tasa_desocupacion==max(tasa_desocupacion),by=.(region)]
+ene_dt[,tasa_desocupacion := sum(desocupados_exp)/sum(pet_exp)*100,by=.(agno, trimestre, region)][
+  ,.SD[which.max(tasa_desocupacion)],by=trimestre]
 
+tictoc::toc()
+
+tictoc::tic()
+
+map_df(ene,~data.table(.x)[,tasa_desocupacion := sum(desocupados_exp)/sum(pet_exp)*100,by=.(agno, trimestre, region)][
+  ,.SD[which.max(tasa_desocupacion)],by=trimestre])
+
+tictoc::toc()
+
+big_ene <- ene_df %>% bind_rows(ene_dt,
+                     ene_dt,
+                     ene_dt,
+                     ene_dt,
+                     ene_dt,
+                     ene_dt,
+                     ene_dt,
+                     ene_dt,
+                     ene_dt)
+
+  
+
+tictoc::tic()
+
+big_ene_dt %>% 
+  group_by(agno, trimestre, region) %>% 
+  summarise(tasa_desocupacion = sum(desocupados_exp)/sum(pet_exp)*100) %>% 
+  group_by(trimestre) %>% 
+  arrange(-tasa_desocupacion) %>% 
+  slice(1)
 
 tictoc::toc()
 
 
-  
-# Tasa participación
+# - Calcule la misma tabla con **data.table** y compare resultados
 
-DT2 = data.table(A=5:1, B=letters[5:1])
-  setkey(DT, B)   # reorders table and marks it sorted
-DT[J("b")]      # returns the 2nd row
-DT[list("b")]   # same
-DT[.("b")] 
+library(data.table)
 
+big_ene_dt <- as.data.table(big_ene)
 
+tictoc::tic()
 
+big_ene_dt[,tasa_desocupacion := sum(desocupados_exp)/sum(pet_exp)*100,by=.(agno, trimestre, region)][
+  ,.SD[which.max(tasa_desocupacion)],by=trimestre]
 
-
-ene %>% 
-map(setDT(.)[,tasa_desocupacion := sum(desocupados_exp)/sum(pet_exp)*100,by=.(agno, trimestre, region, provincia)][])
-
-
-
-dat %>% 
-  summarise(tasa_ocupacion = sum(ocupado*fact_cal)/sum(pet*fact_cal)*100)
-
-sum(dat$ocupado*dat$fact_cal)/sum(dat$pet*dat$fact_cal)*100
+tictoc::toc()
 
 
 

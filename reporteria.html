@@ -4,7 +4,7 @@
     <title>Capacitación en R y herramientas de productividad</title>
     <meta charset="utf-8" />
     <meta name="author" content="" />
-    <meta name="date" content="2023-08-18" />
+    <meta name="date" content="2023-08-21" />
     <script src="reporteria_files/header-attrs-2.14/header-attrs.js"></script>
     <script src="reporteria_files/clipboard-2.0.6/clipboard.min.js"></script>
     <link href="reporteria_files/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
@@ -50,11 +50,9 @@ Algunas Posibilidades de reportería con R
 
 - Rmarkdown
   - Repasemos como crear un reporte en **Html**
-  - Ahora hagamos una prueba con un **Word** de referencia
+  - Una prueba con un **Word** de referencia
 
-- Xaringan
-
-Ejercicio práctico
+- Poniendo en práctica!!!
 
 ---
 
@@ -181,15 +179,11 @@ background-position: 100% 0%
 
 --
 
-.big-par[Vamos a crear un RMarkdown en distintos formatos.]
+.h2[Veamos un ejemplo en **Html**]
 
 --
 
-.medium-par[Html]
-
---
-
-.medium-par[Word]
+.h2[Veamos un ejemplo en **Word**]
 
 ---
 
@@ -291,68 +285,57 @@ background-position: 100% 0%
 
 --
 
-    - La función setwd() no funciona dentro de RMarkdown.
-    
-    - Las librerías que necesiten deben estar cargadas en el script de 
-      Rmarkdown (**error habitual**).
-    
-    - Tanto las bases de datos como las variables a utilizar deben estar
-      llamadas dentro el script de Rmarkdown.
-    
-    - Knitr() incluye la impresión de los resultados, por lo que no 
-      es necesario usar print().
-    
-    - No usar View() en RMarkdown, porque en el output no mostrará nada.
-    
-    - Cada chunk puede tener o no tener un nombre. Si los deciden nombrar, 
-      los nombres NO DEBEN REPETIRSE (**error habitual**).
+- La función setwd() no funciona dentro de RMarkdown.
+
+- Las librerías que necesiten deben estar cargadas en el script de 
+  Rmarkdown (**error habitual**).
+
+- Tanto las bases de datos como las variables a utilizar deben estar
+  llamadas dentro el script de Rmarkdown.
+
+- Knitr() incluye la impresión de los resultados, por lo que no 
+  es necesario usar print().
+
+- No usar View() en RMarkdown, porque en el output no mostrará nada.
+
+- Cada chunk puede tener o no tener un nombre. Si los deciden nombrar, 
+  los nombres NO DEBEN REPETIRSE (**error habitual**).
 
 --
 
-Ahora demos un paso mas hacia **Xaringan** 👀.
 ---
 
 background-image: url("imagenes/fondo2.PNG")
 background-size: contain;
 background-position: 100% 0%
 
-# Xaringan!!
+# Poniendo en práctica - Paso 1
 
-El paquete de Xaringan es una extenciónde RMarkdown basado en la librería *remark.js* de JavaScript, que permite generar presentaciones en HTML5.
+**Plan de trabajo:**
 
+La idea es que comiencen a trabajar desde un documento en **Rmarkdown**, puede ser **HTMl** o **Word**, para al final de la clase poder ver los resultados en un reporte.
 
-```r
-# Instalamos 
-install.packages('xaringan')
-```
+--
 
+Se puede trabajar en pareja!
 
-.right[&lt;img src="imagenes/xaringan.png" width="500" /&gt;]
+--
 
-
----
+**Trabajaremos con datos de la ENE**
 
 
-```r
----
-title: "Presentación"
-subtitle: "Con xaringan"
-author: "Proyecto ciencia de datos"
-date: "2023/17/08"
-output:
-  xaringan::moon_reader:
-    lib_dir: libs
-    nature:
-      highlightStyle: github
-      countIncrementalSlides: false
----
+La idea es poder analizar las principales tasas que se publican con esta encuesta:
+1. Tasa desocupación
+1. Tasa ocupación
+1. Tasa participación
 
-# Slice 1
+--
 
----
+**Paso 1**: Abrir todos los archivos .csv utilizando *purrr*, extraer nombres de los archivos así como el trimestre y el año para asignarlos como variables dentro de los dataframes.
 
-# Slice 2
-```
+--
+ 
+**Tenemos 15 minutos!!!**
 
 
 ---
@@ -361,70 +344,272 @@ background-image: url("imagenes/fondo2.PNG")
 background-size: contain;
 background-position: 100% 0%
 
-# Ejercicio 1!
-
-Trabajaremos con datos de la ENE
-
---
-
-La idea es poder analizar las principales tasas que se publican con esta encuesta
-
---
+# Paso 1 - solución
 
 Paso 1: Abrir todos los archivos .csv tenemos 10 minutos
-
---
-
-Abrir archivos utilizando purrr, extraer nombres de los archivos así como el trimestre y el año para asignarlos como variables dentro de los dataframes
-
-
----
-
-background-image: url("imagenes/fondo2.PNG")
-background-size: contain;
-background-position: 100% 0%
-
-# Ejercicio 1! solución
-
-Paso 1: Abrir todos los archivos .csv tenemos 10 minutos
-
 --
 
 1. listamos los archivos en la carpeta
 
-files &lt;- list.files("data/",full.names = T)[17]
+
+```r
+files &lt;- list.files("data/",full.names = T)
+```
 
 --
 
 1.  extraemos el nombre de los archivos
 
-nombres &lt;- str_extract_all(files,"(2022|2023)-(\\d{2})-[a-zA-Z]{3}") %&gt;% str_replace_all("-","_")
 
+```r
+nombres &lt;- str_extract_all(files,"(2022|2023)-(\\d{2})-[a-zA-Z]{3}") %&gt;% str_replace_all("-","_")
+```
 --
 
 1. Abrimos y asignamos nombres anteponiendo la "a" para evitar las comillas en los nombres que comienzan con números
 
+
+```r
 names(ene) &lt;- paste0("a",nombres)
+```
 
 --
 
 1.  extraemos año de los nombres de los archivos
 
-agno &lt;- str_extract_all(nombres,"2022|2023") %&gt;% unlist()
 
+```r
+agno &lt;- str_extract_all(nombres,"2022|2023") %&gt;% unlist()
+```
 --
 
 1.  extraemos trimestres de los nombres
 
+
+```r
 trimestre &lt;- str_extract_all(nombres,"(2022|2023)_(\\d{2})_[a-zA-Z]{3}") %&gt;% str_replace_all("-","_") %&gt;% str_remove_all("2022_|2023_")
+```
 
 --
 
 1.  generamos una variable con el año y una variable con el trimestre para cada archivo
 
+
+```r
 ene &lt;- map2(ene,agno,~mutate(.x,agno = .y))
 
 ene &lt;- map2(ene,trimestre,~mutate(.x,trimestre = .y))
+```
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Poniendo en práctica - Paso 2
+
+1. generemos una función que cree las variables de interés:
+
+- Población en edad de trabaja **-&gt;** pet = edad &gt;= 15
+- Fuerza de trabajo = fdt **-&gt;** edad &gt;= 15
+- Ocupados **-&gt;** cae_especifico &gt;= 1 &amp; cae_especifico &lt;= 7
+- Desocupados **-&gt;** cae_especifico &gt;= 8 &amp; cae_especifico &lt;= 9
+
+**Tenemos 25 minutos!!**
+
+--
+
+Recomendación:
+
+- Primero generar las variables de interés, luego aplicar la ponderación
+
+- Es importante considerar que estas variables deben estar ponderabas por el factor de expansión para obtener los datos a nivel poblacional **(ocupados*fact_cal)**
+
+- Para lograr lo anterior es necesaria una función que multiplique cualquier variable por el factor de expansión, utilizando lazy_eval
+
+---
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Paso 2 - solución
+
+--
+
+1. generemos una función que cree las variables de interés:
+
+- Población en edad de trabaja **-&gt;** pet = edad &gt;= 15
+- Fuerza de trabajo = fdt **-&gt;** edad &gt;= 15
+- Ocupados **-&gt;** cae_especifico &gt;= 1 &amp; cae_especifico &lt;= 7
+- Desocupados **-&gt;** ae_especifico &gt;= 8 &amp; cae_especifico &lt;= 9
+
+
+```r
+f_variables_interes = function(datos){
+  
+  datos %&gt;%
+    mutate(pet = if_else(edad &gt;= 15 ,1,0),
+           fdt = if_else(cae_especifico &gt;= 1 &amp; cae_especifico &lt;= 9, 1, 0), # fuerza de trabajo
+           ocupados = if_else(cae_especifico &gt;= 1 &amp; cae_especifico &lt;= 7, 1, 0), # persona ocupada
+           desocupados = if_else(cae_especifico &gt;= 8 &amp; cae_especifico &lt;= 9, 1, 0)) # personas desocupadas 
+  
+}
+
+ene &lt;- map(ene,f_variables_interes)
+
+sum(ene$a2023_05_amj$fdt*ene$a2023_05_amj$fact_cal)
+```
+
+---
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Paso 2 - solución
+
+Función para ponderación, calcular por factor de expansión
+
+
+
+```r
+ponderar = function(var,fact){
+  
+# {{var}}*{{fact}}
+  
+}
+```
+
+--
+
+Ahora necesitamos calcular la ponderación por todas nuestras variables de interés
+
+seleccionamos solamente variables de interés 
+
+
+```r
+variables = c("sexo","hogar","region","provincia","sector","fact_cal","agno","trimestre","fdt","ocupados","desocupados","pet","ocupados_exp","desocupados_exp",
+  "pet_exp","fdt_exp","agno","trimestre")         
+
+ene &lt;- map_df(ene,~mutate(.x,across(c(ocupados,desocupados,pet,fdt), list(exp = ~ ponderar(.,fact_cal)))) %&gt;% 
+                select(all_of(variables)))
+```
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Poniendo en práctica - Paso 3
+
+Ahora calcularemos las principales tasas publicadas
+
+Formulas:
+
+1. Tasa desocupación
+Corresponde al número de personas desocupadas, expresado como porcentaje de la fuerza
+de trabajo (entendida como la sumatoria de personas ocupadas y desocupadas):
+
+`\(TD = [DO/FDT]*100\)`
+
+Donde:
+𝐷𝑂 = Personas desocupadas
+𝐹𝑇 = Fuerza de trabajo 
+
+1. Tasa ocupación
+Corresponde al número de personas ocupadas como porcentaje de la población en edad de trabajar (es decir, de quince años o más):
+
+`\(TO = [O/PET]*100\)`
+
+Donde:
+𝐷𝑂 = Personas desocupadas
+𝑃𝐸𝑇 = Población en edad de trabajar 
+
+1. Tasa participación
+Corresponde al número de personas en la fuerza de trabajo expresado como porcentaje de la población en edad de trabajar.
+
+`\(TP = [FDT/PET]*100\)`
+
+Donde,
+𝐹𝑇 = Fuerza de trabajo
+𝑃𝐸𝑇 = Población en edad de trabajar 
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Poniendo en práctica - Paso 3
+
+- Calcule una tabla con las 3 tasas para todos los trimestres
+
+- Calcule una tabla donde podamos ver la región con mayor tasa de desempleo por trimestre con **purrr**
+
+- Calcule la misma tabla con **data.table** y compare resultados con alguno de los siguientes paquetes [aquí](https://www.jumpingrivers.com/blog/timing-in-r/)
+
+* sería buena idea aplicar las tablas de la lista con 
+
+**Tenemos 25 minutos!!!**
+
+--
+
+¿Si se comparan los resultados con los valores publicados los valores son similares?
+
+.center[&lt;img src="imagenes/indicadores.png" width="900" /&gt;]
+
+---
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Poniendo en práctica - Paso 3 solución
+
+- Calcule una tabla con las 3 tasas para todos los trimestres
+
+
+```r
+ene_df %&gt;% 
+  group_by(agno, trimestre) %&gt;% 
+  summarise(tasa_desocupacion = sum(desocupados_exp)/sum(pet_exp)*100,
+            tasa_ocupacion = sum(ocupados_exp)/sum(pet_exp)*100,
+            tasa_participacion = sum(fdt)/sum(pet_exp)*100) 
+```
+
+
+- Calcule una tabla donde podamos ver las regiones con mayor tasa de desempleo por trimestre con **purrr**
+  
+
+```r
+tictoc::tic()
+
+ene_df %&gt;% 
+  group_by(agno, trimestre, region) %&gt;% 
+  summarise(tasa_desocupacion = sum(desocupados_exp)/sum(pet_exp)*100) %&gt;% 
+  group_by(trimestre) %&gt;% 
+  arrange(-tasa_desocupacion) %&gt;% 
+  slice(1)
+  
+tictoc::toc()
+```
+
+- Calcule la misma tabla con **data.table** y compare resultados
+
+
+```r
+library(data.table)
+
+ene_dt &lt;- as.data.table(ene_df)
+
+tictoc::tic()
+
+ene_dt[,tasa_desocupacion := sum(desocupados_exp)/sum(pet_exp)*100,by=.(agno, trimestre, region)][
+  ,.SD[which.max(tasa_desocupacion)],by=trimestre]
+
+tictoc::toc()
+```
+
 
 ---
 
