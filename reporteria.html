@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Capacitación en R y herramientas de productividad</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="" />
+    <meta name="date" content="2023-08-18" />
+    <script src="reporteria_files/header-attrs-2.14/header-attrs.js"></script>
+    <script src="reporteria_files/clipboard-2.0.6/clipboard.min.js"></script>
+    <link href="reporteria_files/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="reporteria_files/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <link href="reporteria_files/panelset-0.2.6/panelset.css" rel="stylesheet" />
+    <script src="reporteria_files/panelset-0.2.6/panelset.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+class: center, middle
+
+.linea-superior[]
+.linea-inferior[]
+
+
+&lt;img src="imagenes/logo_portada2.png" width="200" /&gt;
+
+
+## Capacitación en R y herramientas de productividad - nivel intermedio
+
+## Proyecto Ciencia de Datos
+
+## Generación de reportería con R y Práctica!
+
+
+
+
+
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Contenidos de hoy
+
+Algunas Posibilidades de reportería con R
+
+- Rmarkdown
+  - Repasemos como crear un reporte en **Html**
+  - Ahora hagamos una prueba con un **Word** de referencia
+
+- Xaringan
+
+Ejercicio práctico
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# R Markdown (recordando)
+
+--
+
+`R Markdown` .pur[provee de un marco] para generar documentos en el contexto del análisis de datos. En un único documento de `R Markdown` podemos:
+
+--
+
+.pull-left[
+Guardar y ejecutar código.
+
+Generar reportes de alta calidad que pueden ser compartidos fácilmente.
+
+Los documentos creados con `R Markdown` son completamente reproducibles.
+
+Generar presentaciones con **código** y **tablas**, **imágenes**, etc. (como las de este curso).
+]
+
+.pull-right[
+![](https://www.rstudio.com/wp-content/uploads/2017/05/rmarkdown.png)
+]
+
+---
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# R Markdown (recordando)
+
+--
+
+## Cómo funciona
+
+Los archivos de `R Markdown` en general tienen 3 partes:
+
+--
+
+(1). Un encabezado que permite configurar inicialmente el documento que vamos a escribir (**yaml**)
+
+
+![](https://smac-group.github.io/ds/images/rmd_yaml.png)
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# R Markdown (recordando)
+
+
+--
+
+(2). "Pedazos de código" (o en inglés, ***chunk codes***).
+
+![](https://smac-group.github.io/ds/images/rmd_code_chunk.png)
+
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# R Markdown (recordando)
+
+--
+
+(3). Los **cuerpos de texto** donde podemos hacer comentarios sin necesidad de usar "#"
+
+
+![](imagenes/rmd_text.PNG)
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# R Markdown (recordando)
+
+--
+
+Para generar el documento se puede utilizar el comando `render` o bien utilizar el botón `Knit` (Tejer).
+
+--
+
+`R Markdown` ofrece muchas posibilidades. Veremos mayormente cómo crear documentos en formato .pdf usando `R Markdown`, donde se puede incrustar código en `\(\LaTeX\)`.
+
+--
+
+Una de las principales **desventajas** de RMarkdown es que toma bastante **tiempo**⏰🕰️ hacer un documento la primera vez que se usa.
+
+--
+
+Y generalmente hay que **estudiar** un poco con google para que nuestros documentos resulten tal y como los imaginamos.
+
+--
+
+`\(\LaTeX\)` es un sistema de composición de textos orientado a la creación de documentos científicos.
+
+--
+
+`\(\LaTeX\)` es muy útil para escribir textos que incluyen notación matemática.
+
+--
+
+`R Markdown` cuenta con varias herramientas que nos permiten eximirnos un poco del conocimiento de `\(\LaTeX\)` ⏩⏩⏩
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Ahora manos a la obra 👐 
+
+--
+
+.big-par[Vamos a crear un RMarkdown en distintos formatos.]
+
+--
+
+.medium-par[Html]
+
+--
+
+.medium-par[Word]
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Rmarkdown
+
+## Configuración de los chunks
+
+--
+
+Los chunks tienen muchos argumentos que permiten moldear el output a lo que deseamos.
+
+--
+
+Existe un chunk llamado por defecto "setup".
+
+--
+
+.discussion[
+{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+]
+
+--
+
+A través de este chunk es posible setear la configuración por defecto.
+
+--
+
+Esto lo hacemos cuando vamos a utilizar mucho alguna configuración, .pur[para no repetirla en cada chunk].
+
+--
+
+Los mismos argumentos se pueden utilizar para ajustar cualquier chunk.
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Rmarkdown
+
+--
+
+## Principales argumentos de los chunks
+
+--
+
+- include = FALSE/TRUE
+
+--
+
+- echo = FALSE/TRUE
+
+--
+
+- message = FALSE/TRUE
+
+--
+
+- warning = FALSE/TRUE
+
+--
+
+- error = FALSE/TRUE
+
+--
+
+**nota:** el shortcut para generar chunks en RMarkdown es .medium-par[.pur[Ctrl+Alt+i]]
+
+--
+
+Este shortcut realmente ahorra muuuchos pasos.
+
+--
+
+Revisemos esta guía de funcionalidades de [RMarkdown](https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf?_ga=2.232725209.739649860.1603251660-1579346009.1585862093)
+
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Rmarkdown
+
+--
+
+## Algunos elementos a considerar al trabajar en Rmarkdown
+
+--
+
+`knitr()` (tejer) es una función. Y las funciones requieren que todo lo que se necesite se encuentre dentro de su ámbito. Entonces:
+
+--
+
+    - La función setwd() no funciona dentro de RMarkdown.
+    
+    - Las librerías que necesiten deben estar cargadas en el script de 
+      Rmarkdown (**error habitual**).
+    
+    - Tanto las bases de datos como las variables a utilizar deben estar
+      llamadas dentro el script de Rmarkdown.
+    
+    - Knitr() incluye la impresión de los resultados, por lo que no 
+      es necesario usar print().
+    
+    - No usar View() en RMarkdown, porque en el output no mostrará nada.
+    
+    - Cada chunk puede tener o no tener un nombre. Si los deciden nombrar, 
+      los nombres NO DEBEN REPETIRSE (**error habitual**).
+
+--
+
+Ahora demos un paso mas hacia **Xaringan** 👀.
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Xaringan!!
+
+El paquete de Xaringan es una extenciónde RMarkdown basado en la librería *remark.js* de JavaScript, que permite generar presentaciones en HTML5.
+
+
+```r
+# Instalamos 
+install.packages('xaringan')
+```
+
+
+.right[&lt;img src="imagenes/xaringan.png" width="500" /&gt;]
+
+
+---
+
+
+```r
+---
+title: "Presentación"
+subtitle: "Con xaringan"
+author: "Proyecto ciencia de datos"
+date: "2023/17/08"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      countIncrementalSlides: false
+---
+
+# Slice 1
+
+---
+
+# Slice 2
+```
+
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Ejercicio 1!
+
+Trabajaremos con datos de la ENE
+
+--
+
+La idea es poder analizar las principales tasas que se publican con esta encuesta
+
+--
+
+Paso 1: Abrir todos los archivos .csv tenemos 10 minutos
+
+--
+
+Abrir archivos utilizando purrr, extraer nombres de los archivos así como el trimestre y el año para asignarlos como variables dentro de los dataframes
+
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Ejercicio 1! solución
+
+Paso 1: Abrir todos los archivos .csv tenemos 10 minutos
+
+--
+
+1. listamos los archivos en la carpeta
+
+files &lt;- list.files("data/",full.names = T)[17]
+
+--
+
+1.  extraemos el nombre de los archivos
+
+nombres &lt;- str_extract_all(files,"(2022|2023)-(\\d{2})-[a-zA-Z]{3}") %&gt;% str_replace_all("-","_")
+
+--
+
+1. Abrimos y asignamos nombres anteponiendo la "a" para evitar las comillas en los nombres que comienzan con números
+
+names(ene) &lt;- paste0("a",nombres)
+
+--
+
+1.  extraemos año de los nombres de los archivos
+
+agno &lt;- str_extract_all(nombres,"2022|2023") %&gt;% unlist()
+
+--
+
+1.  extraemos trimestres de los nombres
+
+trimestre &lt;- str_extract_all(nombres,"(2022|2023)_(\\d{2})_[a-zA-Z]{3}") %&gt;% str_replace_all("-","_") %&gt;% str_remove_all("2022_|2023_")
+
+--
+
+1.  generamos una variable con el año y una variable con el trimestre para cada archivo
+
+ene &lt;- map2(ene,agno,~mutate(.x,agno = .y))
+
+ene &lt;- map2(ene,trimestre,~mutate(.x,trimestre = .y))
+
+---
+
+class: center, middle
+
+.linea-superior[]
+.linea-inferior[]
+
+
+&lt;img src="imagenes/logo_portada2.png" width="200" /&gt;
+
+## Capacitación en R y herramientas de productividad - nivel intermedio
+
+## Proyecto Ciencia de Datos
+
+## Generación de reportería con R
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

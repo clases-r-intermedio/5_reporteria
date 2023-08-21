@@ -1,0 +1,84 @@
+---
+title: "Reporte ejemplo con Word"
+author: ''
+date: "Agosto 2023"
+output:
+  word_document:
+    reference_docx: Ejemplo-documento.docx
+  pdf_document: default
+  html_document:
+    df_print: paged
+lang: es-ES
+csl: apa-es.csl44
+always_allow_html: yes
+---
+
+```{r setup, echo=FALSE, collapse=TRUE, include=FALSE}
+
+library(flextable)
+library(purrr)
+library(dplyr)
+
+
+FitFlextableToPage <- function(ft, pgwidth = 6){
+  ft_out <- ft %>% autofit()
+  ft_out <- width(ft_out, width = dim(ft_out)$widths*pgwidth /(flextable_dim(ft_out)$widths))
+  return(ft_out)
+}
+
+t1 =  head(iris,20)
+
+
+```
+
+# Introducción
+
+fsdafdasfasdf
+
+
+## prueba
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris porttitor felis tortor, ac aliquet ex faucibus a. Suspendisse id fringilla sem. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris nec euismod nunc. Aliquam non cursus magna, congue hendrerit lacus. Duis quis nibh viverra, dapibus turpis eget, dictum est. Aliquam pulvinar tortor eget leo maximus posuere. Vivamus mollis, diam id eleifend vulputate, ligula purus vehicula tellus, ut ultrices nisl ipsum ut turpis. Nunc vel elementum massa, ac vulputate elit.
+
+# Gestión y logro de Encuestas
+
+Nam quis tortor et nunc fermentum porttitor. Praesent molestie risus in lacus porta, sed elementum tortor cursus. Nulla feugiat egestas orci. Ut nec euismod mi, a lobortis lorem. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ac sapien eget ex ultrices porta. Nunc vitae aliquam mauris, id aliquam ipsum. Nulla lectus arcu, fringilla nec odio non, semper maximus mi. Suspendisse sed pretium odio. Nam venenatis et tortor vel porta. Integer elementum, odio nec vestibulum lobortis, augue ipsum tincidunt neque, quis finibus neque urna eu neque. Morbi a erat eget tellus varius pretium eget vel leo. Ut nec justo nec magna laoreet viverra. Cras ut feugiat enim. Aliquam pretium sem ac accumsan mattis. Cras congue purus eu maximus aliquam.
+
+
+**Tabla 1**
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+
+#### Pegamos tabla 1
+ 
+t1f = flextable(t1)  
+#colformat_num(big.mark=".", digits = 0 ,names(t1)[2:4]) #%>% align(j = c(2:3), align = "center", part = "all")  %>% fontsize( size = 7, part = "all")
+
+FitFlextableToPage(t1f)
+
+
+```
+
+
+
+Integer pulvinar arcu tortor. Sed ultrices cursus rutrum. Aliquam ac dolor turpis. Proin volutpat luctus tortor nec semper. Ut eget velit a neque consectetur facilisis. Proin eu ultricies justo, in laoreet metus. Integer fermentum ante quis eros tincidunt tempor. Etiam ante justo, placerat in tempus eget, accumsan pellentesque ligula. Donec leo dolor, interdum ut enim ut, cursus scelerisque sem. Sed laoreet neque aliquet mi viverra, quis interdum lacus accumsan. Phasellus ornare venenatis lacus dignissim blandit.
+
+
+**Plot 1**
+
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.width = 6, fig.align = "center"}
+
+#### Pegamos plot 1
+
+library(ggplot2)
+
+iris %>%
+  group_by(Species) %>%
+  summarise(max = max(Sepal.Length)) %>%
+  ggplot() +
+  geom_col(aes(Species,max))
+
+
+
+```
+
+Integer pulvinar arcu tortor. Sed ultrices cursus rutrum. Aliquam ac dolor turpis. Proin volutpat luctus tortor nec semper. Ut eget velit a neque consectetur facilisis. Proin eu ultricies justo, in laoreet metus. Integer fermentum ante quis eros tincidunt tempor. Etiam ante justo, placerat in tempus eget, accumsan pellentesque ligula. Donec leo dolor, interdum ut enim ut, cursus scelerisque sem. Sed laoreet neque aliquet mi viverra, quis interdum lacus accumsan. Phasellus ornare venenatis lacus dignissim blandit.
