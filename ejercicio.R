@@ -5,24 +5,23 @@ library(dplyr)
 ### Primer Paso
 
 ### listamos los archivos en la carpeta
-files <- list.files("data/",full.names = T)
+files <- list.files("data/",full.names = F)
 
 ### extraemos el nombre de los archivos
 nombres <- str_extract_all(files,"(2022|2023)-(\\d{2})-[a-zA-Z]{3}") %>% str_replace_all("-","_")
 
 ### asignamos nombre a los archivos
 tictoc::tic()
-ene <- map(files,read.csv2)  
+ene <- map(files,read.csv2) %>% set_names(paste0("a",nombres))
 tictoc::toc()
 
 ### asignamos nombres anteponiendo la "a" para evitar las comillas en los nombres que comienzan con números
-names(ene) <- paste0("a",nombres)
 
 ### extraemos año de los nombres de los archvo
 agno <- str_extract_all(nombres,"2022|2023") %>% unlist()
 
 ### extraemos trimestres de los nombres
-trimestre <- str_extract_all(nombres,"(2022|2023)_(\\d{2})_[a-zA-Z]{3}") %>% str_replace_all("-","_") %>% str_remove_all("2022_|2023_")
+trimestre <- nombres %>% str_replace_all("-","_") %>% str_remove_all("2022_|2023_")
 
 ### generamos una variable con el año y una variable con el trimestre para cada archivo
 ene <- map2(ene,agno,~mutate(.x,agno = .y))
@@ -30,9 +29,12 @@ ene <- map2(ene,agno,~mutate(.x,agno = .y))
 ene <- map2(ene,trimestre,~mutate(.x,trimestre = .y))
 
 ### revisamos las variables
-# ene$a2022_01_def$agno
-# ene$a2022_01_def$trimestre
+ ene$a2022_01_def$agno
+ 
+ ene$a2022_01_def$trimestre
 
+ 
+ 
 
 ## Segundo Paso
 
@@ -56,7 +58,12 @@ f_variables_interes = function(datos){
 
 ene <- map(ene,f_variables_interes)
 
-sum(ene$a2023_05_amj$fdt*ene$a2023_05_amj$fact_cal)
+ene$a2022_01_def$pet
+ene$a2022_01_def$fdt
+ene$a2022_01_def$ocupados
+
+
+sum(ene$a2023_05_amj$ocupados*ene$a2023_05_amj$fact_cal)
 
 # 2 Es importante considerar que estas variables deben estar ponderabas 
 # por el factor de expansión para obtener los datos a nivel poblacionales,
@@ -72,13 +79,11 @@ ponderar = function(var,fact){
 
 # Ahora necesitamos calcular la ponderación por todas nuestras variables de interés, intenta utilizar lo aprendido en clases, para evitar repetir código
 
-# seleccionar solamente variables de interés 
 
-variables = c("sexo","hogar","region","provincia","sector","fact_cal","agno","trimestre","fdt","ocupados","desocupados","pet","ocupados_exp","desocupados_exp",
-  "pet_exp","fdt_exp","agno","trimestre")         
+ene <- map(ene,~mutate(.x,across(c(ocupados,desocupados,pet,fdt), list(exp = ~ ponderar(.,fact_cal)))))
 
-ene <- map(ene,~mutate(.x,across(c(ocupados,desocupados,pet,fdt), list(exp = ~ ponderar(.,fact_cal)))) %>% select(all_of(variables)))
 
+sum(ene$a2023_05_amj$ocupados_exp)
 
 # Paso 3 calculamos 3 tasas principales
 # ahora calcularemos las principales tasas publicadas

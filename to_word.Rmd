@@ -15,6 +15,7 @@ always_allow_html: yes
 
 ```{r setup, echo=FALSE, collapse=TRUE, include=FALSE}
 
+
 library(flextable)
 library(purrr)
 library(dplyr)
@@ -53,8 +54,9 @@ Nam quis tortor et nunc fermentum porttitor. Praesent molestie risus in lacus po
 t1f = flextable(t1)  
 #colformat_num(big.mark=".", digits = 0 ,names(t1)[2:4]) #%>% align(j = c(2:3), align = "center", part = "all")  %>% fontsize( size = 7, part = "all")
 
-FitFlextableToPage(t1f)
+# FitFlextableToPage(t1f)
 
+kableExtra::kable(t1)
 
 ```
 

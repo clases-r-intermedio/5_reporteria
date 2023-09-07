@@ -6,6 +6,31 @@ date: '2023-08-21'
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+list.files(full.names = T,recursive = T,pattern = ".csv")
+
+### listamos los archivos en la carpeta
+files <- list.files("data/",full.names = T)
+
+nombres <- str_extract_all(files,"(2022|2023)-(\\d{2})-[a-zA-Z]{3}") %>% str_replace_all("-","_")
+
+### asignamos nombre a los archivos
+tictoc::tic()
+ene <- map(files,read.csv2) %>% set_names(paste0("a",nombres))  
+tictoc::toc()
+
+### extraemos año de los nombres de los archvo
+agno <- str_extract_all(nombres,"2022|2023") %>% unlist()
+
+### extraemos trimestres de los nombres
+trimestre <- nombres %>% str_remove_all("2022_|2023_")
+
+### generamos una variable con el año y una variable con el trimestre para cada archivo
+ene <- map2(ene,agno,~mutate(.x,agno = .y))
+
+ene <- map2(ene,trimestre,~mutate(.x,trimestre = .y))
+
+
 ```
 
 ## R Markdown

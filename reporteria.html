@@ -4,7 +4,7 @@
     <title>Capacitación en R y herramientas de productividad</title>
     <meta charset="utf-8" />
     <meta name="author" content="" />
-    <meta name="date" content="2023-08-21" />
+    <meta name="date" content="2023-09-07" />
     <script src="reporteria_files/header-attrs-2.14/header-attrs.js"></script>
     <script src="reporteria_files/clipboard-2.0.6/clipboard.min.js"></script>
     <link href="reporteria_files/xaringanExtra-clipboard-0.2.6/xaringanExtra-clipboard.css" rel="stylesheet" />
@@ -370,7 +370,9 @@ nombres &lt;- str_extract_all(files,"(2022|2023)-(\\d{2})-[a-zA-Z]{3}") %&gt;% s
 
 
 ```r
-names(ene) &lt;- paste0("a",nombres)
+tictoc::tic()
+ene &lt;- map(files,read.csv2) %&gt;% set_names(paste0("a",nombres))
+tictoc::toc()
 ```
 
 --
@@ -387,7 +389,7 @@ agno &lt;- str_extract_all(nombres,"2022|2023") %&gt;% unlist()
 
 
 ```r
-trimestre &lt;- str_extract_all(nombres,"(2022|2023)_(\\d{2})_[a-zA-Z]{3}") %&gt;% str_replace_all("-","_") %&gt;% str_remove_all("2022_|2023_")
+trimestre &lt;- nombres %&gt;% str_replace_all("-","_") %&gt;% str_remove_all("2022_|2023_")
 ```
 
 --
@@ -427,6 +429,8 @@ Recomendación:
 - Es importante considerar que estas variables deben estar ponderabas por el factor de expansión para obtener los datos a nivel poblacional **(ocupados*fact_cal)**
 
 - Para lograr lo anterior es necesaria una función que multiplique cualquier variable por el factor de expansión, utilizando lazy_eval
+
+**Variable muestral -&gt; función para ponderar -&gt; variable ponderada**
 
 ---
 background-image: url("imagenes/fondo2.PNG")

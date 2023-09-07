@@ -384,7 +384,11 @@ nombres <- str_extract_all(files,"(2022|2023)-(\\d{2})-[a-zA-Z]{3}") %>% str_rep
 1. Abrimos y asignamos nombres anteponiendo la "a" para evitar las comillas en los nombres que comienzan con números
 
 ```{r eval=FALSE}
-names(ene) <- paste0("a",nombres)
+
+tictoc::tic()
+ene <- map(files,read.csv2) %>% set_names(paste0("a",nombres))
+tictoc::toc()
+
 
 ```
 
@@ -401,7 +405,7 @@ agno <- str_extract_all(nombres,"2022|2023") %>% unlist()
 1.  extraemos trimestres de los nombres
 
 ```{r eval=FALSE}
-trimestre <- str_extract_all(nombres,"(2022|2023)_(\\d{2})_[a-zA-Z]{3}") %>% str_replace_all("-","_") %>% str_remove_all("2022_|2023_")
+trimestre <- nombres %>% str_replace_all("-","_") %>% str_remove_all("2022_|2023_")
 ```
 
 --
@@ -441,6 +445,8 @@ Recomendación:
 - Es importante considerar que estas variables deben estar ponderabas por el factor de expansión para obtener los datos a nivel poblacional **(ocupados*fact_cal)**
 
 - Para lograr lo anterior es necesaria una función que multiplique cualquier variable por el factor de expansión, utilizando lazy_eval
+
+**Variable muestral -> función para ponderar -> variable ponderada**
 
 ---
 background-image: url("imagenes/fondo2.PNG")
@@ -586,6 +592,7 @@ background-position: 100% 0%
 - Calcule una tabla con las 3 tasas para todos los trimestres
 
 ```{r eval=FALSE}
+ene_df = ene %>% bind_rows()
 
 ene_df %>% 
   group_by(agno, trimestre) %>% 
